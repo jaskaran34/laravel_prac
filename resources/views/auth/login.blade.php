@@ -1,7 +1,7 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
+    
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -23,6 +23,15 @@
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
+
+        @if ($errors->has('captcha'))
+    <span class="text-danger">{{ $errors->first('captcha') }}</span>
+@endif
+
+        <div class="mt-4" >
+        <img src="{{ $captcha }}" alt="CAPTCHA" style="display: inline;">
+        <input type="text" value="1111" name="captcha" required>
+    </div>
 
         <!-- Remember Me -->
         <div class="block mt-4">

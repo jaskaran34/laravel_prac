@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return redirect()->route('login');
-});
+})->middleware(App\Http\Middleware\CheckPermission::class)->name('root_of_project');
 
 Route::get('/dashboard', function (Request $request) {
     $user = $request->user();
@@ -21,7 +21,7 @@ Route::get('/dashboard', function (Request $request) {
         $products = Product::where('added_by', $user->id)->get();
         return view('dashboard',compact('user','products'));
     }
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified',App\Http\Middleware\CheckPermission::class])->name('dashboard');
 
 
 
@@ -43,7 +43,7 @@ Route::delete('/delete_product', function (Request $request) {
     }
     
 
-})->middleware(['auth', 'verified'])->name('delete_product');
+})->middleware(['auth', 'verified',App\Http\Middleware\CheckPermission::class])->name('delete_product');
 
 Route::put('/edit_product', function (Request $request) {
     
@@ -59,7 +59,7 @@ Route::put('/edit_product', function (Request $request) {
     }
     
 
-})->middleware(['auth', 'verified'])->name('edit_product');
+})->middleware(['auth', 'verified',App\Http\Middleware\CheckPermission::class])->name('edit_product');
 
 Route::put('/update_product', function (Request $request) {
 
@@ -81,7 +81,7 @@ Route::put('/update_product', function (Request $request) {
     }
     
 
-})->middleware(['auth', 'verified'])->name('update_product');
+})->middleware(['auth', 'verified',App\Http\Middleware\CheckPermission::class])->name('update_product');
 
 
 
@@ -105,9 +105,9 @@ Route::post('/add_product', function (Request $request) {
     }
     
     
-})->middleware(['auth', 'verified'])->name('add_product');
+})->middleware(['auth', 'verified',App\Http\Middleware\CheckPermission::class])->name('add_product');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth',App\Http\Middleware\CheckPermission::class])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
