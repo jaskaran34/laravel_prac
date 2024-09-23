@@ -14,7 +14,7 @@ Route::get('/dashboard', function (Request $request) {
     $user = $request->user();
     
     if($user->is_admin){
-        $products=Product::all();
+        $products=Product::orderBy('created_at', 'desc')->paginate(5);
         return view('dashboard',compact('user','products'));
     }
     else{

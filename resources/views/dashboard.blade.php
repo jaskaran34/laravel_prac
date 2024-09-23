@@ -93,6 +93,7 @@
         @endforeach
     </tbody>
 </table>
+{{$products->links()}}
 <form method="POST" action="{{ route('delete_product')}}" name="delete_form">
     @csrf 
     @method('DELETE')
